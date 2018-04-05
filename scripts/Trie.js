@@ -29,17 +29,13 @@ class Trie {
     const letters = [...word.toLowerCase()];
     let suggestedWords = [];
 
-    if(!currentNode.children[letters[0]]) {
-      return [];
-    }
-
-    letters.forEach(letter => {
-      if (currentNode.children) {
-        if(currentNode.children[letter]) {
-          currentNode = currentNode.children[letter];
+    for(let i = 0; i < letters.length; i++) {
+        if(currentNode.children[letters[i]]) {
+          currentNode = currentNode.children[letters[i]];
+        } else {
+            return [];
         }
-      }
-    })
+    }
 
     let retrieveWord = (word, currentNode) => {
       if (currentNode.isWord) {

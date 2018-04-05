@@ -69,9 +69,17 @@ describe('TRIE', () => {
     })
 
     it('should return an empty array if the root doesn\'t have a child node equal to the first inserted letter', function() {
+      trie.insert('pie');
+
       const suggest = trie.suggest('dinger');
 
-      trie.insert('pie');
+      expect(suggest).to.deep.equal([]);
+    })
+
+    it('should return an empty array if the entire suggested word isn\'t in the trie', function() {
+      trie.insert('carpool');
+
+      const suggest = trie.suggest('cat');
 
       expect(suggest).to.deep.equal([]);
     })
