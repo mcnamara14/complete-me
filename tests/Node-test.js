@@ -5,11 +5,23 @@ describe('Node', () => {
   let node;
 
   beforeEach(() => {
-    node = new Node('von')
+    node = new Node()
   })
 
-  it.skip('should be a thing', () => {
-    expect(node).to.exist
+  it('should be a thing', () => {
+    expect(node).to.exist;
+  })
+
+  it('should have the word property start as null by default', function() {
+    expect(node.word).to.equal(null);
+  })
+
+  it('should start out as not a word', function() {
+    expect(node.isWord).to.equal(false);
+  })
+
+  it('should start with an empty object as its children property', function() {
+    expect(node.children).to.deep.equal({});
   })
 
 })

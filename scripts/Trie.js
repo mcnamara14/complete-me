@@ -22,11 +22,6 @@ class Trie {
       this.wordCount++;
       currentNode.isWord = true;
     } 
-
-  }
-
-  count() {
-    return this.wordCount;
   }
 
   suggest(word) {
@@ -66,7 +61,12 @@ class Trie {
 
     return suggestedWords;
   }
-}
 
+  populate(array) {
+    array.forEach(element => {
+      this.insert(element);
+    })
+  }
+}
 
 module.exports = Trie;

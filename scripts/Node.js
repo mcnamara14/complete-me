@@ -7,6 +7,3 @@ class Node {
 }
 
 module.exports = Node;
-
-
-// node takes in a word as a value

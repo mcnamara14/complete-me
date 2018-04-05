@@ -1,5 +1,9 @@
 const { expect } = require('chai');
+require('locus')
 const Trie = require('../scripts/Trie');
+const fs = require('fs');
+const text = '/usr/share/dict/words';
+const dictionary = fs.readFileSync(text).toString().trim().split('\n');
 
 describe('TRIE', () => {
   let trie;
@@ -13,44 +17,50 @@ describe('TRIE', () => {
   });
 
   it('should start with a word count of zero', function() {
-    expect(trie.wordCount, 0)
+    expect(trie.wordCount).to.equal(0);
   })
 
   describe('INSERT', () => {
-    // it('should force the string taken in as an argument to lower case', function() {
-    //   let word = 'Hairball';
-    //   trie.insert(word);
+    it('should force the string taken in as an argument to lower case', function() {
+      trie.insert('HAIRBALL');
 
-    //   expect(lowercaseWord, 'hairball')
-    // })
+      expect(trie.root.children.h.word).to.equal('h');
+      expect(trie.root.children.h.children.a.word).to.equal('a');
+    })
 
     it('should insert a node into the trie', function() {
       trie.insert('von');
-      expect(trie.root.children.v.word, 'v')
+
+      expect(trie.root.children.v.word).to.equal('v');
     })
 
     it('should define the end of a word', function() {
       trie.insert('meow');
-      expect(trie.root.children.m.children.e.children.o.children.w.isWord, true)
+
+      expect(trie.root.children.m.children.e.children.o.children.w.isWord).to.equal(true);
     })
 
     it('should increase the word count when a word is inserted', function() {
       trie.insert('catnip');
-      expect(trie.wordCount, 1);
+
+      expect(trie.wordCount).to.equal(1);
     })
 
     it('should not increase the word count when duplicate words are inserted', function() {
       trie.insert('furry');
       trie.insert('plotting');
       trie.insert('furry');
-      expect(trie.wordCount, 2);
+
+      expect(trie.wordCount).to.equal(2);
     })
 
-    it('should add addition children to the last node of a prefix to words with the same prefix', function() {
+    it('should have additional children with the same node is used', function() {
       trie.insert('paws');
       trie.insert('pant');
-      expect(Object.keys(trie.root.children.p.children.a.children).length, 2);
+
+      expect(Object.keys(trie.root.children.p.children.a.children).length).to.equal(2);
     })
+  })
 
   describe('SUGGEST', () => {
 
@@ -58,21 +68,34 @@ describe('TRIE', () => {
       expect(trie.suggest).to.exist;
     })
 
-    it('should return an empty array if the word is not in the trie', function() {
+    it('should return an empty array if the root doesn\'t have a child node equal to the first inserted letter', function() {
+      const suggest = trie.suggest('dinger');
+
+      trie.insert('pie');
+
+      expect(suggest).to.deep.equal([]);
+    })
+
+    it('should return an array of suggested words', function() {
       trie.insert('pie');
       trie.insert('pizza');
       trie.insert('pickles');
       trie.insert('pineapple');
       trie.insert('poodle');
 
-      let suggest = trie.suggest('p');
-      console.log(suggest)
+      const suggest = trie.suggest('p');
 
       expect(suggest).to.deep.equal(['pie', 'pizza', 'pickles', 'pineapple', 'poodle']);
     })
   })
 
+  describe('POPULATE', () => {
 
+    it('should populate the trie with all the words in the dictionary', function() {
+      trie.populate(dictionary);
+
+      expect(trie.wordCount).to.equal(234371);
+    })
 
   })
 })
