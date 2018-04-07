@@ -20,6 +20,10 @@ describe('Node', () => {
     expect(node.isWord).to.equal(false);
   })
 
+  it('should start with a popularity of zero', function() {
+    expect(node.popularity).to.equal(0);
+  })
+
   it('should start with an empty object as its children property', function() {
     expect(node.children).to.deep.equal({});
   })
